@@ -170,7 +170,7 @@ public class Weather {
 
 	@Override
 	public String toString() {
-		return "Weather [time=" + time + ", time_local=" + time_local + ", temp=" + temp + ", dwpt=" + dwpt + ", rhum="
+		return "[time=" + time + ", time_local=" + time_local + ", temp=" + temp + ", dwpt=" + dwpt + ", rhum="
 				+ rhum + ", prcp=" + prcp + ", snow=" + snow + ", wdir=" + wdir + ", wspd=" + wspd + ", wpgt=" + wpgt
 				+ ", pres=" + pres + ", tsun=" + tsun + ", coco=" + coco + "]";
 	}

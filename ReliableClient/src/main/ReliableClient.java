@@ -10,12 +10,13 @@ public class ReliableClient {
 		SensorThread dt = new SensorThread(queue);
 		Thread t = new Thread(dt);
 		t.start();
+		CommunicationClient client = new CommunicationClient();
 		
 		while(true) {
 			Weather curr = queue.poll();
 			if(curr != null) {
-				// TODO: Create HTTP Request to a server and repeat until it was successful
 				System.out.println("Weather data:\n" + queue.poll() + "\nQueue Size: " + queue.size());
+				client.sendReliableRequest(curr);
 				System.out.println("-------------------------------------");
 			}
 			try {
