@@ -1,9 +1,13 @@
 # ReliableMessaging
 Reliable Messaging between Client - Server
 
+![Alt text](/SystemDraw.png?raw=true "Drawing of our system")
 
+# Reliable HTTP Server on GCloud
 
-# Data Generator
+TODO
+
+# Reliable HTTP Client
 
 ## Weather Data
 
