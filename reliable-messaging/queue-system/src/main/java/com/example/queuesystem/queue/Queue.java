@@ -23,7 +23,6 @@ public class Queue implements QueueSystem {
 
     private static final Logger LOGGER = LogManager.getLogger(Queue.class);
 
-    private final MongoTemplate mongoTemplate;
     private final TaskCreator taskCreator;
     private final QueueRepo queueRepo;
     private final TaskRepo taskRepo;
@@ -33,7 +32,6 @@ public class Queue implements QueueSystem {
                  TaskCreator taskCreator,
                  QueueRepo queueRepo,
                  TaskRepo taskRepo) {
-        this.mongoTemplate = mongoTemplate;
         this.taskCreator = taskCreator;
         this.queueRepo = queueRepo;
         this.taskRepo = taskRepo;

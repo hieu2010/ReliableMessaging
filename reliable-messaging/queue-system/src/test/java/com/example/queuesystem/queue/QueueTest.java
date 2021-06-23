@@ -24,7 +24,7 @@ public class QueueTest {
         "", "", "", coco};
         Weather weatherSensorData = Weather.createWeather(attrs);
         List<String> taskIds = queue.createTask("testqueue", weatherSensorData);
-        Assertions.assertEquals(Collections.singletonList("id1"), taskIds);
+        Assertions.assertTrue(taskIds.get(0).length() >= 10);
     }
 
 }
