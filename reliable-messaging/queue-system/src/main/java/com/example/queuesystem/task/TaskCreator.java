@@ -23,8 +23,8 @@ public class TaskCreator {
     public MongoTask createMongoTask(int priority, Weather data) {
 
         MongoTask mongoTask = new MongoTask();
-        //mongoTask.setTaskId(idGenerator.generateId());
-        mongoTask.setTaskId("id1");
+        mongoTask.setTaskId(idGenerator.generateId());
+        //mongoTask.setTaskId("id1"); only for test
         mongoTask.setCreatedAt(Instant.now());
         mongoTask.setPriority(priority);
         mongoTask.setState(TaskState.CREATED);
