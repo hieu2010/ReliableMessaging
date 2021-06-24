@@ -3,7 +3,7 @@ package com.example.reliablemessaging.task;
 import java.time.Instant;
 import java.util.Map;
 
-public class Task {
+public class TaskWrapper {
 
     private String taskId;
     private Instant createdAt;

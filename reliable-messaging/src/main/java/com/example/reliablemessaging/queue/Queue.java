@@ -1,12 +1,14 @@
 package com.example.reliablemessaging.queue;
 
+import com.example.reliablemessaging.consumer.PollingTaskConsumer;
 import com.example.reliablemessaging.entities.MongoQueue;
 import com.example.reliablemessaging.repo.QueueRepo;
 import com.example.reliablemessaging.repo.TaskRepo;
 import com.example.reliablemessaging.entities.MongoTask;
+import com.example.reliablemessaging.task.DataProcessor;
 import com.example.reliablemessaging.task.TaskCreator;
 import com.example.reliablemessaging.task.TaskState;
-import com.example.reliablemessaging.task.WeatherSensorData;
+import com.example.reliablemessaging.weathersensor.Weather;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,6 +29,9 @@ public class Queue implements QueueSystem {
     private final TaskCreator taskCreator;
     private final QueueRepo queueRepo;
     private final TaskRepo taskRepo;
+
+    @Autowired
+    private Queue self;
 
     @Autowired
     public Queue(MongoTemplate mongoTemplate,
@@ -53,12 +57,12 @@ public class Queue implements QueueSystem {
     }
 
     @Override
-    public List<String> createTask(String queueName, WeatherSensorData sensorData) {
+    public List<String> createTask(String queueName, Weather sensorData) {
         return createTasks(queueName, Collections.singletonList(sensorData));
     }
 
     @Override
-    public List<String> createTasks(String queueName, List<WeatherSensorData> weatherSensorData) {
+    public List<String> createTasks(String queueName, List<Weather> weatherSensorData) {
         LOGGER.info("Creating tasks for {} weather data units", weatherSensorData.size());
         while (true) {
             try {
@@ -76,9 +80,9 @@ public class Queue implements QueueSystem {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public List<String> createTasksInTransaction(String queueName, List<WeatherSensorData> weatherSensorData) {
+    public List<String> createTasksInTransaction(String queueName, List<Weather> weatherSensorData) {
         List<MongoTask> mongoTasks = new ArrayList<>();
-        for (WeatherSensorData singleSensorReading : weatherSensorData) {
+        for (Weather singleSensorReading : weatherSensorData) {
             MongoTask task = taskCreator.createMongoTask(1, singleSensorReading);
             mongoTasks.add(task);
         }
@@ -108,4 +112,19 @@ public class Queue implements QueueSystem {
         taskRepo.updateAll(toBeStarted);
         return startedTasks;
     }
+
+    @Override
+    public void consume(DataProcessor processor) {
+        new PollingTaskConsumer(
+                self,
+                processor
+        );
+    }
+
+    @Override
+    public void markSuccess(String queueName, MongoTask task) {
+
+    }
+
+
 }

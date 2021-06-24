@@ -1,6 +1,6 @@
-package com.example.reliablemessaging.task;
+package com.example.reliablemessaging.weathersensor;
 
-public class WeatherSensorData {
+public class Weather {
     private String time; // UTC time stamp (format: YYYY-MM-DD hh:mm:ss)
     private String time_local; // Local time stamp (format: YYYY-MM-DD hh:mm:ss); only provided if tz is set
     private float temp; // The air temperature in °C
@@ -15,7 +15,7 @@ public class WeatherSensorData {
     private int tsun; // The one hour sunshine total in minutes (m)
     private int coco; // The weather condition code
 
-    public WeatherSensorData(String time, String time_local, float temp, float dwpt, int rhum, float prcp, int snow, int wdir,
+    public Weather(String time, String time_local, float temp, float dwpt, int rhum, float prcp, int snow, int wdir,
                    float wspd, float wpgt, float pres, int tsun, int coco) {
         super();
         this.time = time;
@@ -137,7 +137,7 @@ public class WeatherSensorData {
         this.coco = coco;
     }
 
-    public static WeatherSensorData createWeather(String[] attributes) {
+    public static Weather createWeather(String[] attributes) {
         String time= attributes[0];
         String time_local= attributes[1];
         float temp = !attributes[2].isEmpty() ? Float.parseFloat(attributes[2]) : 0;
@@ -152,7 +152,7 @@ public class WeatherSensorData {
         int tsun = !attributes[11].isEmpty() ? Integer.parseInt(attributes[11]) : 0;
         int coco = !attributes[12].isEmpty() ? Integer.parseInt(attributes[12]) : 0;
 
-        return new WeatherSensorData(
+        return new Weather(
                 time,
                 time_local,
                 temp,

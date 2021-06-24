@@ -1,4 +1,4 @@
-package com.example.datagenerator.util;
+package com.example.reliablemessaging.utils;
 
 
 import org.springframework.lang.NonNull;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class CsvReader {
 
-    private static final String RES_FOLDER_PATH = "src/test/resources/";
+    private static final String RES_FOLDER_PATH = "src/main/resources/";
     private static final String CSV_ID = ".csv";
 
     private List<String[]> entries = new ArrayList<>();

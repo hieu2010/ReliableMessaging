@@ -3,6 +3,7 @@ package com.example.reliablemessaging.consumer;
 import com.example.reliablemessaging.entities.MongoTask;
 import com.example.reliablemessaging.queue.QueueSystem;
 import com.example.reliablemessaging.task.DataProcessor;
+import com.example.reliablemessaging.task.TaskWrapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -64,11 +65,20 @@ public class PollingTaskConsumer {
     private void processTask(MongoTask task, int threadId) {
         LOGGER.info("Processing tasks with id: {}", task.getTaskId());
         try {
-            dataProcessor.process(task);
+            dataProcessor.process(convert(task));
         } catch (Exception e) {
             LOGGER.info("Task processing error: {}", e.getMessage());
         }
 
+    }
+
+
+    private TaskWrapper convert(MongoTask task) {
+        TaskWrapper taskWrapper = new TaskWrapper();
+        taskWrapper.setTaskId(task.getTaskId());
+        taskWrapper.setCreatedAt(task.getCreatedAt());
+        taskWrapper.setTaskProps(task.getWeatherSensorData());
+        return taskWrapper;
     }
 
 

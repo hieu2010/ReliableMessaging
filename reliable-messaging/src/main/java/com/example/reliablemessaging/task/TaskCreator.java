@@ -2,6 +2,7 @@ package com.example.reliablemessaging.task;
 
 import com.example.reliablemessaging.entities.MongoTask;
 import com.example.reliablemessaging.utils.IdGenerator;
+import com.example.reliablemessaging.weathersensor.Weather;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,11 +19,11 @@ public class TaskCreator {
         this.idGenerator = idGenerator;
     }
 
-    public MongoTask createMongoTask(int priority, WeatherSensorData data) {
+    public MongoTask createMongoTask(int priority, Weather data) {
 
         MongoTask mongoTask = new MongoTask();
-        //mongoTask.setTaskId(idGenerator.generateId());
-        mongoTask.setTaskId("id1");
+        mongoTask.setTaskId(idGenerator.generateId());
+        //mongoTask.setTaskId("id1");
         mongoTask.setCreatedAt(Instant.now());
         mongoTask.setPriority(priority);
         mongoTask.setState(TaskState.CREATED);
