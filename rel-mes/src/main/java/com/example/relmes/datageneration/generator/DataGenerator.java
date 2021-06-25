@@ -27,7 +27,7 @@ public class DataGenerator {
 
     @Scheduled(fixedRate = DATA_GENERATION_INTERVAL)
     public void produceWeatherData() {
-        LOGGER.info("Producing data...");
+        //LOGGER.info("Producing data...");
         // First, produce random weather data from a csv file
         String[] rawWeather = weatherReader.getRow(
                 RAND.nextInt(weatherReader.getNumberOfDataEntries() - 1) + 1);
