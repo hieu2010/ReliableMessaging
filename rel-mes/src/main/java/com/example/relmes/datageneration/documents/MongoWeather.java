@@ -134,4 +134,9 @@ public class MongoWeather {
     public void setCoco(int coco) {
         this.coco = coco;
     }
+
+    @Override
+    public String toString() {
+        return time_local + " " + temp + " " + rhum + "\n";
+    }
 }

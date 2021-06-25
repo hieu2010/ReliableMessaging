@@ -3,12 +3,12 @@ package com.example.relmes.commons.sensor;
 public class Weather {
     private String time; // UTC time stamp (format: YYYY-MM-DD hh:mm:ss)
     private String time_local; // Local time stamp (format: YYYY-MM-DD hh:mm:ss); only provided if tz is set
-    private float temp; // The air temperature in °C
-    private float dwpt; // The dew point in °C
+    private float temp; // The air temperature in Â°C
+    private float dwpt; // The dew point in Â°C
     private int rhum; // The relative humidity in percent (%)
     private float prcp; // The one hour precipitation total in mm
     private int snow; // The snow depth in mm
-    private int wdir; // The wind direction in degrees (°)
+    private int wdir; // The wind direction in degrees (Â°)
     private float wspd; // The average wind speed in km/h
     private float wpgt; // The peak wind gust in km/h
     private float pres; // The sea-level air pressure in hPa

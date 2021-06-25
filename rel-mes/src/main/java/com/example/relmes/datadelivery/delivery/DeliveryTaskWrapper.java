@@ -24,6 +24,8 @@ public class DeliveryTaskWrapper {
     private static final short POLL_INTERVAL = 10000;
     private static final short MAX_POLL_COUNT = 100;
 
+    public static boolean pauseTask = false;
+
     private ScheduledFuture state;
 
     private TaskScheduler taskScheduler;
@@ -47,16 +49,25 @@ public class DeliveryTaskWrapper {
     class DeliveryTask implements Runnable {
         @Override
         public void run() {
-            List<MongoWeather> data = weatherRepo.getLastX(MAX_POLL_COUNT);
-            LOGGER.info("Pulled {} entries", data.size());
-            Integer answer = webClient
-                    .post()
-                    .body(BodyInserters.fromValue("abc"))
-                    .retrieve()
-                    .bodyToMono(Integer.class)
-                    .block(); // should it block?
-            LOGGER.info("Answer from the server: {}", answer);
+            if(!DeliveryTaskWrapper.pauseTask) {
+                List<MongoWeather> data = weatherRepo.getLastX(MAX_POLL_COUNT);
+                final StringBuilder builder = new StringBuilder();
+                data.forEach(val -> {
+                    builder.append(val.toString());
+                });
 
+                LOGGER.info("Pulled {} entries", data.size());
+                Integer answer = webClient
+                        .post()
+                        .body(BodyInserters.fromValue(builder.toString()))
+                        .retrieve()
+                        .bodyToMono(Integer.class)
+                        .block(); // should it block?
+                LOGGER.info("Answer from the server: {}", answer);
+                if(false) {
+                    DeliveryTaskWrapper.pauseTask = true;
+                }
+            }
         }
     }
 
