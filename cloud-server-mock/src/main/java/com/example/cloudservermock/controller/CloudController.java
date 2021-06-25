@@ -21,6 +21,7 @@ import java.util.List;
 public class CloudController {
 
     private static final Logger LOGGER = LogManager.getLogger(CloudController.class);
+    private static boolean started = true;
 
     @Autowired
     ServerWeatherRepo weatherRepo;
@@ -28,31 +29,28 @@ public class CloudController {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public Mono<String> answer(@RequestBody String dataAsCsv) {
-        LOGGER.info("Received: {}", dataAsCsv.length());
+        if(started) {
+            // TODO:
+            //  create a jar that sets up the server-weather collection instead
+            weatherRepo.create();
+            started = false;
+        }
+        // Load csv and remove duplicates
         String[] lines = dataAsCsv.split("\\n");
-
+        LOGGER.info("Data received: {}", lines.length);
         int duplicateCount = 0;
-        int deleteCount = 0;
         int addedCount = 0;
         List<Weather> weatherList = new ArrayList<Weather>();
         for(String s : lines) {
-
             Weather data = Weather.csvToString(s);
             if(weatherRepo.findOneByTime_Local(data.getTime_local()) == null) {
                 weatherList.add(data);
             } else {
-                LOGGER.info("Line: {}", weatherRepo.findOneByTime_Local(data.getTime_local()));
                 duplicateCount++;
             }
         }
         weatherRepo.saveAll(weatherList);
-        int entryCount = (int) weatherRepo.count();
-        if( entryCount > 200) {
-            entryCount -= 200;
-            DeleteResult dr = weatherRepo.removeFirstX(entryCount);
-            deleteCount = (int) dr.getDeletedCount();
-        }
-        return Mono.just("Data length: " + String.valueOf(dataAsCsv.length() + "\nData deleted: " + deleteCount + "\nData saved: " + weatherList.size() + "\nDuplicates: " + duplicateCount));
+        return Mono.just("Data length: " + String.valueOf(dataAsCsv.length() + "\nData saved: " + weatherList.size() + "\nDuplicates: " + duplicateCount));
     }
 
 }
