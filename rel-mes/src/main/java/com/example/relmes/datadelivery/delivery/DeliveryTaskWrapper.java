@@ -57,11 +57,11 @@ public class DeliveryTaskWrapper {
                 });
 
                 LOGGER.info("Pulled {} entries", data.size());
-                Integer answer = webClient
+                String answer = webClient
                         .post()
                         .body(BodyInserters.fromValue(builder.toString()))
                         .retrieve()
-                        .bodyToMono(Integer.class)
+                        .bodyToMono(String.class)
                         .block(); // should it block?
                 LOGGER.info("Answer from the server: {}", answer);
                 if(false) {

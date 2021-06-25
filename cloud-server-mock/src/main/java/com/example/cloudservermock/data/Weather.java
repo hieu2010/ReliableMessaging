@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Base64;
 import java.util.Random;
 
-@Document("weather")
+@Document("server-weather")
 public class Weather {
 
     private static final short ID_LEN = 10;
