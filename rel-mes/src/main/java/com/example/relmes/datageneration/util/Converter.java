@@ -1,7 +1,7 @@
-package com.example.relmes.util;
+package com.example.relmes.datageneration.util;
 
-import com.example.relmes.documents.MongoWeather;
-import com.example.relmes.sensor.Weather;
+import com.example.relmes.datageneration.documents.MongoWeather;
+import com.example.relmes.commons.sensor.Weather;
 
 import java.util.Base64;
 import java.util.Random;

@@ -1,4 +1,4 @@
-package com.example.relmes.util;
+package com.example.relmes.datageneration.util;
 
 import org.springframework.lang.NonNull;
 

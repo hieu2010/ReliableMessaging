@@ -1,9 +1,9 @@
-package com.example.relmes.generator;
+package com.example.relmes.datageneration.generator;
 
-import com.example.relmes.repo.WeatherRepo;
-import com.example.relmes.sensor.Weather;
-import com.example.relmes.util.Converter;
-import com.example.relmes.util.CsvReader;
+import com.example.relmes.commons.repo.WeatherRepo;
+import com.example.relmes.commons.sensor.Weather;
+import com.example.relmes.datageneration.util.Converter;
+import com.example.relmes.datageneration.util.CsvReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

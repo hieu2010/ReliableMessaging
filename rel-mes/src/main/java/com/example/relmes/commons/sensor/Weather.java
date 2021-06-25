@@ -1,4 +1,4 @@
-package com.example.relmes.sensor;
+package com.example.relmes.commons.sensor;
 
 public class Weather {
     private String time; // UTC time stamp (format: YYYY-MM-DD hh:mm:ss)
