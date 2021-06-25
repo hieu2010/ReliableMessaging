@@ -61,9 +61,8 @@ public class DeliveryTaskWrapper {
                 List<MongoWeather> data = weatherRepo.getLastX(MAX_POLL_COUNT);
                 final String mergedWeatherData = mergeWeatherData(data);
                 LOGGER.info("Pulled {} entries", data.size());
-
                 // Second, make a POST request
-                Integer answer = -1;
+                String answer = null;
                 do {
                     try {
                         LOGGER.info("Making an attempt to send the data to the cloud...");
@@ -71,7 +70,7 @@ public class DeliveryTaskWrapper {
                                 .post()
                                 .body(BodyInserters.fromValue(mergedWeatherData))
                                 .retrieve()
-                                .bodyToMono(Integer.class)
+                                .bodyToMono(String.class)
                                 .block(); // should it block?
 
                         success = true;
@@ -93,7 +92,6 @@ public class DeliveryTaskWrapper {
                         }
                     }
                 } while (!success);
-
                 LOGGER.info("Answer from the server: {}", answer);
                 LOGGER.info("Transferring to the Cloud successful. Deleting processed records.");
                 // delete processed records from the db
