@@ -39,16 +39,16 @@ The class _DataGenerator.java_ is responsible for creating data periodically. Ev
 ### Data Delivery
 
 The class _DeliveryTaskWrapper.java_ is a wrapper for a _DeliveryTask.java_, which represents a periodical attempt to send the sensor data to the cloud. The logic behind the delivery taks is the following:
- * get data from the local MongoDB instance (max. 100 entries)
- * make an attempt to send the data (as a string) to the cloud in a HTTP POST request
- * if succeeded, delete the data from the DB
- * if failed, retry
+ * get data from the local MongoDB instance (max. 100 entries),
+ * make an attempt to send the data (as a string) to the cloud in a HTTP POST request,
+ * if succeeded, delete the data from the DB,
+ * if failed, retry.
 
 # FAQ
 
 #### How is reliable messaging ensured?
 
-Answer 1
+Reliable messaging is warranted through the HTTP and the underlying TCP protocol. 
 
 #### What happens if Local Component is disconnected?
 
@@ -56,7 +56,8 @@ Answer 2
 
 #### What happens if Cloud Component is disconnected?
 
-Answer 3
+The data generator still produces data, but the data delivery task is stopped. Repeated attemps to send the originally read data are made. 
+When the cloud component is reconnected, the original data is sent, the delivery taks is restarted. 
 
 #### What happens if MongoDB crashes?
 
@@ -64,7 +65,7 @@ Dunno xd
 
 #### How are tasks scheduled?
 
-TODO
+Mocked sensor data is generated every 200m using Spring scheduler. A devivery tasks is also a scheduled task that can be stopped and started. This is needed in case Cloud Component is dead. 
 
 # Reliable HTTP Client
 
