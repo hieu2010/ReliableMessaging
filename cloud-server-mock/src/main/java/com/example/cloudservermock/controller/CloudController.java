@@ -7,10 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import com.example.cloudservermock.repo.ServerWeatherRepo;
 
@@ -51,6 +48,11 @@ public class CloudController {
         }
         weatherRepo.saveAll(weatherList);
         return Mono.just("Data length: " + String.valueOf(dataAsCsv.length() + "\nData saved: " + weatherList.size() + "\nDuplicates: " + duplicateCount));
+    }
+
+    @GetMapping("/health")
+    public String health() {
+        return "hello world";
     }
 
 }
