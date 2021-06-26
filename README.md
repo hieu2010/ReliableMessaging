@@ -34,7 +34,15 @@ The local component has three objectives:
 
 ### Data Generation
 
-The class _DataGenerator.java_ is responsible for creating data periodically. Every 200ms a random row from a weather table (see Section Weather Data below) is taken and its content is saved into the MongoDB.
+The class _DataGenerator.java_ is responsible for creating data periodically. Every 200ms a random row from a weather table (see Section Weather Data below) is taken, and the row's content is saved into the MongoDB.
+
+### Data Delivery
+
+The class _DeliveryTaskWrapper.java_ is a wrapper for a _DeliveryTask.java_, which represents a periodical attempt to send the sensor data to the cloud. The logic behind the delivery taks is the following:
+ * get data from the local MongoDB instance (max. 100 entries)
+ * make an attempt to send the data (as a string) to the cloud in a HTTP POST request
+ * if succeeded, delete the data from the DB
+ * if failed, retry
 
 # FAQ
 
@@ -53,6 +61,8 @@ Answer 3
 #### What happens if MongoDB crashes?
 
 Dunno xd
+
+#### How are tasks scheduled?
 
 TODO
 
