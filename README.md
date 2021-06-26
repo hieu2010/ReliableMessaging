@@ -1,9 +1,58 @@
-# ReliableMessaging
-Reliable Messaging between Client - Server
+# Introduction
 
-![Alt text](/SystemDraw.png?raw=true "Drawing of our system")
+This section presents the goal of the app and the laid down requirements.
 
-# Reliable HTTP Server on GCloud
+## Reliable messaging
+
+The goal of this project is to prepare an application that solves some 
+fog-specific challenges. In particular, the focus of this project is on
+reliable communication.
+
+## Requirements
+
+The following requirements have to be fulfiled:
+ - the application consists of two components: a local component and a cloud component,
+ - the local component has to simulate sensor data,
+ - the components have to communicate with each other, i.e. the communication is bi-directional,
+ - the communication between the components is frequent, i.e. the data transmission takes place several time a minute
+ - upon a disconnection and/or crash, the components have to work and send the data when reconnected
+
+# Implementation
+
+This section describes the technology stack and the components together with their interactions.
+
+## Tech Stack
+
+Both **Local Component** and **Cloud Component** use Java 11, Spring Boot, and MongoDB. In addition, the **Server** runs in a VM on the Google Cloud Platform.
+
+## Local Component
+
+The local component has three objectives: 
+ - generate (simulate) sensor data
+ - send the data to the Cloud Component
+ - ...
+
+### Data Generation
+
+The class _DataGenerator.java_ is responsible for creating data periodically. Every 200ms a random row from a weather table (see Section Weather Data below) is taken and its content is saved into the MongoDB.
+
+# FAQ
+
+#### How is reliable messaging ensured?
+
+Answer 1
+
+#### What happens if Local Component is disconnected?
+
+Answer 2
+
+#### What happens if Cloud Component is disconnected?
+
+Answer 3
+
+#### What happens if MongoDB crashes?
+
+Dunno xd
 
 TODO
 
