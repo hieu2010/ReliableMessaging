@@ -20,7 +20,7 @@ public class Converter {
         MongoWeather mongoWeather = new MongoWeather();
         mongoWeather.setMeasurementId(generateId());
         mongoWeather.setTime(weather.getTime());
-        mongoWeather.setTime_local(weather.getTime_local());
+        mongoWeather.setTime_local(weather.getLocalTimeFromCsv());
         mongoWeather.setTemp(weather.getTemp());
         mongoWeather.setDwpt(weather.getDwpt());
         mongoWeather.setRhum(weather.getRhum());
