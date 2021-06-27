@@ -53,7 +53,9 @@ The server components has ... objectives:
  - save received data to the DB
  - send the order/command to the local component
 
-# FAQ
+# Ensuring reliable message delivery
+
+This section collects some questions and answers concerning reliable message delivery
 
 #### How is reliable messaging ensured?
 
