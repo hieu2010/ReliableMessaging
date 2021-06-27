@@ -1,5 +1,7 @@
 package com.example.cloudservermock.controller;
 
+import com.example.cloudservermock.command.Command;
+import com.example.cloudservermock.command.CommandTaskWrapper;
 import com.example.cloudservermock.data.Weather;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -51,6 +53,11 @@ public class CloudController {
     @GetMapping("/visualization")
     public List<Weather> health() {
         return weatherRepo.getWeatherData();
+    }
+
+    @GetMapping("/action")
+    public Command getAction() {
+        return CommandTaskWrapper.command;
     }
 
 }
