@@ -27,17 +27,23 @@ public class CommandTaskWrapper {
     private static final short POLL_INTERVAL = 3000;
     private static final short NO_OLDER_THAN_MIN = 5;
 
+    public static boolean success = false;
+    public static boolean isRunning = true;
+
     private ScheduledFuture state;
+
     private TaskScheduler taskScheduler;
     private ServerWeatherRepo weatherRepo;
+    private WebClient webClient;
 
-    public static Command command = null;
-
+    private static Command prevCommand = Command.HUMIDITY_AND_TEMPERATURE_OK;
     @Autowired
     public CommandTaskWrapper(TaskScheduler taskScheduler,
-                               ServerWeatherRepo weatherRepo) {
+                               ServerWeatherRepo weatherRepo,
+                               WebClient webClient) {
         this.taskScheduler = taskScheduler;
         this.weatherRepo = weatherRepo;
+        this.webClient = webClient;
     }
 
     @PostConstruct
@@ -48,15 +54,53 @@ public class CommandTaskWrapper {
     class CommandTask implements Runnable {
         @Override
         public void run() {
+            success = false;
             // First, get data from the DB that is no older than x
             List<Weather> data = weatherRepo.getNoOlderThan(NO_OLDER_THAN_MIN);
             // Watch out for 'cold-start'
-            if (!data.isEmpty()) {
-                command = prepareInstructionForLocalComp(data);
-            } else {
-                command = Command.ERROR;
+            if (data.isEmpty()) {
+                return;
             }
-            // LOGGER.info("Command: {}", command);
+            // Second, create a command for the local component
+            // according to the values in data
+            Command commandForTheLocalComponent = prepareInstructionForLocalComp(data);
+            if(commandForTheLocalComponent != prevCommand) {
+                LOGGER.info("Command changed to: {}", commandForTheLocalComponent);
+                prevCommand = commandForTheLocalComponent;
+
+                // Third, make a POST request
+                do {
+                    try {
+                        // just fire and forget
+                         webClient
+                                .post()
+                                .body(BodyInserters.fromValue(commandForTheLocalComponent.toString()))
+                                .retrieve()
+                                .bodyToMono(Void.class)
+                                .block();
+
+                        success = true;
+                        if (!isRunning) {
+                            start();
+                        }
+                    } catch (Exception e) {
+                        LOGGER.info("Server error. Message: {}", e.getMessage());
+                        try {
+                            // busy waiting
+                            Thread.sleep(2000);
+                        } catch (InterruptedException interruptedException) {
+                            interruptedException.printStackTrace();
+                        }
+                        if (isRunning) {
+                            LOGGER.info("Stopping the task");
+                            stop();
+                        }
+                    }
+                } while (!success);
+                LOGGER.info("Transferring to the Local Component successful.");
+            } else {
+                LOGGER.info("No new command ({})", prevCommand);
+            }
         }
     }
 
@@ -84,9 +128,15 @@ public class CommandTaskWrapper {
     }
 
     public void start() {
+        isRunning = true;
         state = taskScheduler.scheduleAtFixedRate(
                 new CommandTask(),
                 POLL_INTERVAL
         );
+    }
+
+    public void stop() {
+        isRunning = false;
+        state.cancel(false);
     }
 }

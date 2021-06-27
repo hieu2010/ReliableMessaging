@@ -1,4 +1,4 @@
-package com.example.relmes.datadelivery.config;
+package com.example.cloudservermock.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +11,7 @@ public class Config {
     public WebClient getWebClient() {
         WebClient webClient = WebClient.builder()
                 //.baseUrl("https://cloud-component-htqvfl4nhq-ew.a.run.app/")
-                .baseUrl("http://localhost:8080")
+                .baseUrl("http://localhost:8181")
                 .build();
         return webClient;
     }

@@ -55,9 +55,4 @@ public class CloudController {
         return weatherRepo.getWeatherData();
     }
 
-    @GetMapping("/action")
-    public Command getAction() {
-        return CommandTaskWrapper.command;
-    }
-
 }
