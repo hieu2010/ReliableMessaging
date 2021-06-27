@@ -4,7 +4,7 @@ import java.time.Instant;
 
 public class Weather {
     private String time; // UTC time stamp (format: YYYY-MM-DD hh:mm:ss)
-    private String localTimeFromCsv; // Local time stamp (format: YYYY-MM-DD hh:mm:ss); only provided if tz is set
+    private String time_local; // Local time stamp (format: YYYY-MM-DD hh:mm:ss); only provided if tz is set
     private float temp; // The air temperature in Â°C
     private float dwpt; // The dew point in Â°C
     private int rhum; // The relative humidity in percent (%)
@@ -17,13 +17,11 @@ public class Weather {
     private int tsun; // The one hour sunshine total in minutes (m)
     private int coco; // The weather condition code
 
-    private String trueLocalTime;
-
-    public Weather(String time, String localTimeFromCsv, float temp, float dwpt, int rhum, float prcp, int snow, int wdir,
-                   float wspd, float wpgt, float pres, int tsun, int coco, String trueLocalTime) {
+    public Weather(String time, String time_local, float temp, float dwpt, int rhum, float prcp, int snow, int wdir,
+                   float wspd, float wpgt, float pres, int tsun, int coco) {
         super();
         this.time = time;
-        this.localTimeFromCsv = localTimeFromCsv;
+        this.time_local = time_local;
         this.temp = temp;
         this.dwpt = dwpt;
         this.rhum = rhum;
@@ -35,7 +33,6 @@ public class Weather {
         this.pres = pres;
         this.tsun = tsun;
         this.coco = coco;
-        this.trueLocalTime = trueLocalTime;
     }
 
     public String getTime() {
@@ -46,12 +43,12 @@ public class Weather {
         this.time = time;
     }
 
-    public String getLocalTimeFromCsv() {
-        return localTimeFromCsv;
+    public String getTime_local() {
+        return time_local;
     }
 
-    public void setLocalTimeFromCsv(String localTimeFromCsv) {
-        this.localTimeFromCsv = localTimeFromCsv;
+    public void setTime_local(String time_local) {
+        this.time_local = time_local;
     }
 
     public float getTemp() {
@@ -142,17 +139,9 @@ public class Weather {
         this.coco = coco;
     }
 
-    public String getTrueLocalTime() {
-        return trueLocalTime;
-    }
-
-    public void setTrueLocalTime(String trueLocalTime) {
-        this.trueLocalTime = trueLocalTime;
-    }
-
     public static Weather createWeather(String[] attributes) {
         String time = attributes[0];
-        String time_local = attributes[1];
+        String time_local = Instant.now().toString();
         float temp = !attributes[2].isEmpty() ? Float.valueOf(attributes[2]) : 0;
         float dwpt = !attributes[3].isEmpty() ? Float.valueOf(attributes[3]) : 0;
         int rhum = !attributes[4].isEmpty() ? Integer.valueOf(attributes[4]) : 0;
@@ -179,14 +168,13 @@ public class Weather {
                 wpgt,
                 pres,
                 tsun,
-                coco,
-                trueLocalTime);
+                coco);
     }
 
     @Override
     public String toString() {
-        return "[time=" + time + ", time_local=" + localTimeFromCsv + ", temp=" + temp + ", dwpt=" + dwpt + ", rhum="
+        return "[time=" + time + ", time_local=" + time_local + ", temp=" + temp + ", dwpt=" + dwpt + ", rhum="
                 + rhum + ", prcp=" + prcp + ", snow=" + snow + ", wdir=" + wdir + ", wspd=" + wspd + ", wpgt=" + wpgt
-                + ", pres=" + pres + ", tsun=" + tsun + ", coco=" + coco + ", true local time=" + trueLocalTime + "]";
+                + ", pres=" + pres + ", tsun=" + tsun + ", coco=" + coco + "]";
     }
 }

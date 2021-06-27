@@ -151,9 +151,9 @@ public class Weather {
         String[] var = weatherString.split(" ");
         Weather toReturn = new Weather();
         toReturn.setMeasurementId(generateId());
-        toReturn.setTime_local(var[0] + " " + var[1]);
-        toReturn.setTemp(Float.parseFloat(var[2]));
-        toReturn.setRhum(Integer.parseInt(var[3]));
+        toReturn.setTime_local(var[0].split("T")[0] + var[0].split("T")[1]);
+        toReturn.setTemp(Float.parseFloat(var[1]));
+        toReturn.setRhum(Integer.parseInt(var[2]));
         return toReturn;
     }
 

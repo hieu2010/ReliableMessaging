@@ -25,7 +25,7 @@ public class DeliveryTaskWrapper {
     private static final Logger LOGGER = LogManager.getLogger(DeliveryTaskWrapper.class);
 
     private static final short POLL_INTERVAL = 10000;
-    private static final short MAX_POLL_COUNT = 100;
+    private static final short MAX_POLL_COUNT = 5;
 
     private static int COUNTER = 0;
 

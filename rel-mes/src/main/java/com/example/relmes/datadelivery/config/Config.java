@@ -10,7 +10,8 @@ public class Config {
     @Bean
     public WebClient getWebClient() {
         WebClient webClient = WebClient.builder()
-                .baseUrl("https://cloud-component-htqvfl4nhq-ew.a.run.app/")
+                //.baseUrl("https://cloud-component-htqvfl4nhq-ew.a.run.app/")
+                .baseUrl("http://localhost:8080")
                 .build();
         return webClient;
     }
