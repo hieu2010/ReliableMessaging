@@ -54,15 +54,17 @@ public class CommandTaskWrapper {
         @Override
         public void run() {
             success = false;
-            // First, get data from the DB
+            // First, get data from the DB that is no older than x
             List<Weather> data = weatherRepo.getNoOlderThan(NO_OLDER_THAN_MIN);
             // Watch out for 'cold-start'
             if (data.isEmpty()) {
                 return;
             }
             LOGGER.info("Pulled {} entries", data.size());
+            // Second, create a command for the local component
+            // according to the values in data
             Command commandForTheLocalComponent = prepareInstructionForLocalComp(data);
-            // Second, make a POST request
+            // Third, make a POST request
             do {
                 try {
                     // just fire and forget
@@ -112,7 +114,7 @@ public class CommandTaskWrapper {
         } else if (averageHum > HAZARDOUS_HUM_START) {
             return Command.REDUCE_HUMIDITY;
         } else if (averageTemp > HAZARDOUS_TEMP_START) {
-            return Command.REDUCE_HUMIDITY;
+            return Command.REDUCE_TEMPERATURE;
         } else {
             return Command.HUMIDITY_AND_TEMPERATURE_OK;
         }
