@@ -25,7 +25,7 @@ public class CommandTaskWrapper {
     private static final double HAZARDOUS_HUM_START = 55;
 
     private static final short POLL_INTERVAL = 10000;
-    private static final short MAX_POLL_COUNT = 5;
+    private static final short NO_OLDER_THAN_MIN = 2;
 
     public static boolean success = false;
     public static boolean isRunning = true;
@@ -55,7 +55,7 @@ public class CommandTaskWrapper {
         public void run() {
             success = false;
             // First, get data from the DB
-            List<Weather> data = weatherRepo.getLastX(MAX_POLL_COUNT);
+            List<Weather> data = weatherRepo.getNoOlderThan(NO_OLDER_THAN_MIN);
             // Watch out for 'cold-start'
             if (data.isEmpty()) {
                 return;
@@ -77,8 +77,8 @@ public class CommandTaskWrapper {
                     if (!isRunning) {
                         start();
                     }
-                    LOGGER.info("Error msg {}", e.getMessage());
-                    LOGGER.info("Server error.");
+                } catch (Exception e) {
+                    LOGGER.info("Server error. Message: {}", e.getMessage());
                     try {
                         // busy waiting
                         Thread.sleep(2000);
@@ -91,12 +91,7 @@ public class CommandTaskWrapper {
                     }
                 }
             } while (!success);
-            LOGGER.info("Transferring to the Local Component successful. Deleting records.");
-            // delete processed records from the db
-            List<String> idsToRemove = data.stream()
-                    .map(Weather::getMeasurementId)
-                    .collect(Collectors.toList());
-            weatherRepo.deleteAllById(idsToRemove);
+            LOGGER.info("Transferring to the Local Component successful.");
         }
     }
 

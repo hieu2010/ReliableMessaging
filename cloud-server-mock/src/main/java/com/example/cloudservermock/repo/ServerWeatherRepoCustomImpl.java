@@ -14,6 +14,9 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -60,5 +63,13 @@ public class ServerWeatherRepoCustomImpl implements ServerWeatherRepoCustom {
                 create();
             }
         }
+    }
+
+    @Override
+    public List<Weather> getNoOlderThan(short min) {
+        Instant expired = Instant.now().minus(2, ChronoUnit.MINUTES);
+        return mongoTemplate.find(Query.query(
+                Criteria.where("localTimeInstant").gt(expired)
+        ), Weather.class, "server-weather");
     }
 }

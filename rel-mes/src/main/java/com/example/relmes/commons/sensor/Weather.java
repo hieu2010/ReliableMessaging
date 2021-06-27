@@ -153,7 +153,7 @@ public class Weather {
         float pres = !attributes[10].isEmpty() ? Float.valueOf(attributes[10]) : 0;
         int tsun = !attributes[11].isEmpty() ? Integer.valueOf(attributes[11]) : 0;
         int coco = !attributes[12].isEmpty() ? Integer.valueOf(attributes[12]) : 0;
-        String trueLocalTime = Instant.now().toString();
+
 
         return new Weather(
                 time,

@@ -3,6 +3,12 @@ package com.example.cloudservermock.data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.Base64;
 import java.util.Random;
 
@@ -12,6 +18,7 @@ public class Weather {
     private static final short ID_LEN = 10;
     private static final Base64.Encoder BASE64_ENCODER = Base64.getEncoder().withoutPadding();
     private static final Random RAND = new Random();
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Id
     private String measurementId;
@@ -29,6 +36,8 @@ public class Weather {
     private float pres; // The sea-level air pressure in hPa
     private int tsun; // The one hour sunshine total in minutes (m)
     private int coco; // The weather condition code
+
+    Instant localTimeInstant = null;
 
     public String getMeasurementId() {
         return measurementId;
@@ -142,6 +151,14 @@ public class Weather {
         this.coco = coco;
     }
 
+    public Instant getLocalTimeInstant() {
+        return localTimeInstant;
+    }
+
+    public void setLocalTimeInstant(Instant localTimeInstant) {
+        this.localTimeInstant = localTimeInstant;
+    }
+
     @Override
     public String toString() {
         return time_local + " " + temp + " " + rhum + "\n";
@@ -150,11 +167,25 @@ public class Weather {
     public static Weather csvToString(String weatherString) {
         String[] var = weatherString.split(" ");
         Weather toReturn = new Weather();
+
+        String[] splittedLocalString = var[0].split("T");
+        String time = splittedLocalString[0] + splittedLocalString[1];
+        Instant instant = extractInstant(time);
+
         toReturn.setMeasurementId(generateId());
-        toReturn.setTime_local(var[0].split("T")[0] + var[0].split("T")[1]);
+        toReturn.setTime_local(time);
         toReturn.setTemp(Float.parseFloat(var[1]));
         toReturn.setRhum(Integer.parseInt(var[2]));
+        toReturn.setLocalTimeInstant(instant);
         return toReturn;
+    }
+
+    private static Instant extractInstant(String time) {
+        TemporalAccessor temporalAccessor = FORMATTER.parse(time);
+        LocalDateTime localDateTime = LocalDateTime.from(temporalAccessor);
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
+        Instant result = Instant.from(zonedDateTime);
+        return result;
     }
 
     private static String generateId() {
