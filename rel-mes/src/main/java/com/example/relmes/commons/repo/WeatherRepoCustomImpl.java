@@ -21,7 +21,7 @@ public class WeatherRepoCustomImpl implements WeatherRepoCustom {
     }
 
     @Override
-    public List<MongoWeather> getLastX(int maxCount) {
+    public List<MongoWeather> getLast(int maxCount) {
         return mongoTemplate.find(new Query().limit(maxCount), MongoWeather.class);
     }
 }

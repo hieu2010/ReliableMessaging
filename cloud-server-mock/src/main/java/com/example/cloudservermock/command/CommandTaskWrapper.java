@@ -24,8 +24,8 @@ public class CommandTaskWrapper {
     private static final double HAZARDOUS_TEMP_START = 25;
     private static final double HAZARDOUS_HUM_START = 55;
 
-    private static final short POLL_INTERVAL = 10000;
-    private static final short NO_OLDER_THAN_MIN = 2;
+    private static final short POLL_INTERVAL = 3000;
+    private static final short NO_OLDER_THAN_MIN = 5;
 
     public static boolean success = false;
     public static boolean isRunning = true;

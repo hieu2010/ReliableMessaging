@@ -50,6 +50,6 @@ public class MongoWeather {
 
     @Override
     public String toString() {
-        return time + " " + temp + " " + rhum + "\n";
+        return time + " " + temp + " " + rhum + " " + measurementId + "\n";
     }
 }

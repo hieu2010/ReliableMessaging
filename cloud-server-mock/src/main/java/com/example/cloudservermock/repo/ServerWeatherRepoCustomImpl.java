@@ -34,15 +34,15 @@ public class ServerWeatherRepoCustomImpl implements ServerWeatherRepoCustom {
     }
 
     @Override
-    public List<Weather> getLastX(int maxCount) {
+    public List<Weather> getLast(int maxCount) {
         // To display latest weather data
         return mongoTemplate.find(new Query().limit(maxCount), Weather.class, "server-weather");
     }
 
     @Override
-    public Weather findOneByTime(Instant time) {
+    public Weather findOneById(String measurementId) {
         // To check for duplicates
-        Query idQuery = new Query().addCriteria(Criteria.where("time").is(time));
+        Query idQuery = new Query().addCriteria(Criteria.where("measurementId").is(measurementId));
         return mongoTemplate.findOne(idQuery, Weather.class, "server-weather");
     }
 
@@ -67,7 +67,7 @@ public class ServerWeatherRepoCustomImpl implements ServerWeatherRepoCustom {
 
     @Override
     public List<Weather> getNoOlderThan(short min) {
-        Instant expired = Instant.now().minus(2, ChronoUnit.MINUTES);
+        Instant expired = Instant.now().minus(2, ChronoUnit.SECONDS);
         return mongoTemplate.find(Query.query(
                 Criteria.where("localTimeInstant").gt(expired)
         ), Weather.class, "server-weather");

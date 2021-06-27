@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface ServerWeatherRepoCustom {
 
-    List<Weather> getLastX(int maxCount);   // Retrieves #maxcount weather data
-    Weather findOneByTime(Instant time); // Finds one weather data depending on time_local
+    List<Weather> getLast(int maxCount);   // Retrieves #maxcount weather data
+    Weather findOneById(String measurementId); // Finds one weather data depending on time_local
     void          create(); // Creates a capped collection server-weather if necessary
     List<Weather> getNoOlderThan(short min);
     List<Weather> getWeatherData();

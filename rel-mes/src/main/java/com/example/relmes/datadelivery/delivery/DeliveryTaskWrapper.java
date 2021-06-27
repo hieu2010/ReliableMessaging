@@ -51,7 +51,7 @@ public class DeliveryTaskWrapper {
         public void run() {
                 success = false;
                 // First, get data from the DB
-                List<MongoWeather> data = weatherRepo.getLastX(MAX_POLL_COUNT);
+                List<MongoWeather> data = weatherRepo.getLast(MAX_POLL_COUNT);
                 // Watch out for 'cold-start'
                 if (data.isEmpty()) {
                     return;

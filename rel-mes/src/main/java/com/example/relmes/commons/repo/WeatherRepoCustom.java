@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface WeatherRepoCustom {
 
-    List<MongoWeather> getLastX(int maxCount);
+    List<MongoWeather> getLast(int maxCount);
 
 }

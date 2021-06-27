@@ -38,7 +38,7 @@ public class CloudController {
         List<Weather> weatherList = new ArrayList<>();
         for(String s : lines) {
             Weather data = Weather.csvToString(s);
-            if(weatherRepo.findOneByTime(data.getTime()) == null) {
+            if(weatherRepo.findOneById(data.getMeasurementId()) == null) {
                 weatherList.add(data);
             } else {
                 duplicateCount++;
