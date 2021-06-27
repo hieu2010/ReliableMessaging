@@ -72,7 +72,7 @@ public class Weather {
         String time = splittedLocalString[0] + " " + splittedLocalString[1];
         Instant instant = extractInstant(time.substring(0, 19));
 
-        toReturn.setMeasurementId(generateId());
+        toReturn.setMeasurementId(var[4]);
         toReturn.setTemp(Float.parseFloat(var[1]));
         toReturn.setRhum(Integer.parseInt(var[2]));
         toReturn.setTime(instant);
