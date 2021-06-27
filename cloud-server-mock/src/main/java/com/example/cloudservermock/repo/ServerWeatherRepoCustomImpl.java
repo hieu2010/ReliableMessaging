@@ -49,7 +49,7 @@ public class ServerWeatherRepoCustomImpl implements ServerWeatherRepoCustom {
             // Create a capped collection that can only contain #MAXDOCUMENT documents
             CollectionOptions options = CollectionOptions.empty()
                     .capped()
-										.size(5242880)
+					.size(5242880)
                     .maxDocuments(MAXDOCUMENT);
             mongoTemplate.createCollection("server-weather", options);
         } else {
