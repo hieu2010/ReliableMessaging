@@ -30,11 +30,11 @@ Both **Local Component** and **Cloud Component** use Java 11, Spring Boot, and M
 The local component has three objectives: 
  - generate (simulate) sensor data
  - send the data to the Cloud Component
- - ...
+ - receive orders (commands) from the cloud
 
 ### Data Generation
 
-The class _DataGenerator.java_ is responsible for creating data periodically. Every 200ms a random row from a weather table (see Section Weather Data below) is taken, and the row's content is saved into the MongoDB.
+The class _DataGenerator.java_ is responsible for creating data periodically. Every 200ms a random row from a weather table (see Section Weather Data below) is taken, and the row's content is saved into the MongoDB. The data from the csv contains various different measurements, and thus represents multiple sensors. As our target measurements we chose temperature and humidity. 
 
 ### Data Delivery
 
@@ -43,6 +43,15 @@ The class _DeliveryTaskWrapper.java_ is a wrapper for a _DeliveryTask.java_, whi
  * make an attempt to send the data (as a string) to the cloud in a HTTP POST request,
  * if succeeded, delete the data from the DB,
  * if failed, retry.
+
+## Server Component
+
+The server components has ... objectives:
+ - listen/receive data from the local component
+ - extract relevant information from a data string
+ - check for duplicates (why?)
+ - save received data to the DB
+ - send the order/command to the local component
 
 # FAQ
 
@@ -61,17 +70,18 @@ When the cloud component is reconnected, the original data is sent, the delivery
 
 #### What happens if MongoDB crashes?
 
-Dunno xd
+This part has not been covered.
 
 #### How are tasks scheduled?
 
-Mocked sensor data is generated every 200m using Spring scheduler. A devivery tasks is also a scheduled task that can be stopped and started. This is needed in case Cloud Component is dead. 
+Mocked sensor data is generated every 200m using Spring scheduler. A devivery task is a scheduled task that can be stopped and started. This is needed in case when Cloud Component is dead. 
 
 # Reliable HTTP Client
 
 ## Weather Data
 
-Our reliable HTTP Client uses historical weather .csv data from https://meteostat.net/ to simulate sensor data.
+Our reliable HTTP Client uses historical weather .csv data from https://meteostat.net/ to simulate sensor data. 
+_time_, _temp_ and _rhum_ are send to the Cloud. In addition, a _time_local_ is replaced with the actual time (Instant.now()).
 
 ### CSV Format: 
 | time | time_local | temp | dwpt | rhum | prcp | snow | wdir | wspd | wpgt | pres | tsun | coco |
