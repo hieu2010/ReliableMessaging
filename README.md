@@ -44,7 +44,7 @@ The class _DeliveryTaskWrapper.java_ is a wrapper for a _DeliveryTask.java_, whi
  * if succeeded, delete the data from the DB,
  * if failed, retry.
 
-## Server Component
+## Cloud Component
 
 The server components has ... objectives:
  - listen/receive data from the local component
@@ -76,9 +76,8 @@ This part has not been covered.
 
 Mocked sensor data is generated every 200m using Spring scheduler. A devivery task is a scheduled task that can be stopped and started. This is needed in case when Cloud Component is dead. 
 
-# Reliable HTTP Client
 
-## Weather Data
+# Weather Data
 
 Our reliable HTTP Client uses historical weather .csv data from https://meteostat.net/ to simulate sensor data. 
 _time_, _temp_ and _rhum_ are send to the Cloud. In addition, a _time_local_ is replaced with the actual time (Instant.now()).
