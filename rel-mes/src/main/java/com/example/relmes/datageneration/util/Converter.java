@@ -20,18 +20,8 @@ public class Converter {
         MongoWeather mongoWeather = new MongoWeather();
         mongoWeather.setMeasurementId(generateId());
         mongoWeather.setTime(weather.getTime());
-        mongoWeather.setTime_local(weather.getTime_local());
         mongoWeather.setTemp(weather.getTemp());
-        mongoWeather.setDwpt(weather.getDwpt());
         mongoWeather.setRhum(weather.getRhum());
-        mongoWeather.setPrcp(weather.getPrcp());
-        mongoWeather.setSnow(weather.getSnow());
-        mongoWeather.setWdir(weather.getWdir());
-        mongoWeather.setWspd(weather.getWspd());
-        mongoWeather.setWpgt(weather.getWpgt());
-        mongoWeather.setPres(weather.getPres());
-        mongoWeather.setTsun(weather.getTsun());
-        mongoWeather.setCoco(weather.getCoco());
         return mongoWeather;
     }
 

@@ -2,17 +2,13 @@ package com.example.relmes.datadelivery.delivery;
 
 import com.example.relmes.commons.repo.WeatherRepo;
 import com.example.relmes.datageneration.documents.MongoWeather;
-import com.example.relmes.datageneration.generator.DataGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 import javax.annotation.PostConstruct;
 import java.util.List;

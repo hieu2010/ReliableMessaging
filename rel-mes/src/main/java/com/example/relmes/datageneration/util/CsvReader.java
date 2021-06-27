@@ -14,6 +14,9 @@ public class CsvReader {
     private static final String RES_FOLDER_PATH = "src/main/resources/";
     private static final String CSV_ID = ".csv";
 
+    private static final short TEMP_COL = 2;
+    private static final short HUM_COL = 4;
+
     private List<String[]> entries = new ArrayList<>();
 
     public CsvReader(@NonNull String fileName, String sep) {
@@ -35,8 +38,12 @@ public class CsvReader {
         return entries.get(rowIndex);
     }
 
-    public String getEntry(int rowIndex, int colIndex) {
-        return entries.get(rowIndex)[colIndex];
+    public String getTemp(int rowIndex) {
+        return entries.get(rowIndex)[TEMP_COL];
+    }
+
+    public String getHum(int rowIndex) {
+        return entries.get(rowIndex)[HUM_COL];
     }
 
     public int getNumberOfDataEntries() {
