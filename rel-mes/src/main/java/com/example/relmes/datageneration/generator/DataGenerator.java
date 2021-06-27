@@ -17,7 +17,7 @@ public class DataGenerator {
 
     private static final Logger LOGGER = LogManager.getLogger(DataGenerator.class);
 
-    private static final short DATA_GENERATION_INTERVAL = 3200;
+    private static final short DATA_GENERATION_INTERVAL = 200;
 
     private static final Random RAND = new Random();
     private final CsvReader weatherReader = new CsvReader("data", ",");

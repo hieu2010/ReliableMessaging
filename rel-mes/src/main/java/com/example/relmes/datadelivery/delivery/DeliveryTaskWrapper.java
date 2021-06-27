@@ -27,8 +27,6 @@ public class DeliveryTaskWrapper {
     private static final short POLL_INTERVAL = 10000;
     private static final short MAX_POLL_COUNT = 5;
 
-    private static int COUNTER = 0;
-
     public static boolean success = false;
     public static boolean isRunning = true;
 
@@ -56,22 +54,24 @@ public class DeliveryTaskWrapper {
         @Override
         public void run() {
                 success = false;
-                LOGGER.info("Running the task for the {} st/nd/rd/th time", ++COUNTER);
                 // First, get data from the DB
                 List<MongoWeather> data = weatherRepo.getLastX(MAX_POLL_COUNT);
+                // Watch out for 'cold-start'
+                if (data.isEmpty()) {
+                    return;
+                }
                 final String mergedWeatherData = mergeWeatherData(data);
                 LOGGER.info("Pulled {} entries", data.size());
                 // Second, make a POST request
                 String answer = null;
                 do {
                     try {
-                        LOGGER.info("Making an attempt to send the data to the cloud...");
                         answer = webClient
                                 .post()
                                 .body(BodyInserters.fromValue(mergedWeatherData))
                                 .retrieve()
                                 .bodyToMono(String.class)
-                                .block(); // should it block?
+                                .block();
 
                         success = true;
                         if (!isRunning) {
