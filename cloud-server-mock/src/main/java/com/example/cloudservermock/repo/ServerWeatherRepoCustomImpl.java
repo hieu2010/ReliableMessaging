@@ -72,4 +72,11 @@ public class ServerWeatherRepoCustomImpl implements ServerWeatherRepoCustom {
                 Criteria.where("localTimeInstant").gt(expired)
         ), Weather.class, "server-weather");
     }
+
+    @Override
+    public List<Weather> getWeatherData() {
+        return mongoTemplate.find(Query.query(
+                Criteria.where("temp").gt(-100)
+        ), Weather.class, "server-weather");
+    }
 }

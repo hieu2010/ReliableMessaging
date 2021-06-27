@@ -167,7 +167,6 @@ public class Weather {
     public static Weather csvToString(String weatherString) {
         String[] var = weatherString.split(" ");
         Weather toReturn = new Weather();
-
         String[] splittedLocalString = var[0].split("T");
         String time = splittedLocalString[0] + " " + splittedLocalString[1];
         Instant instant = extractInstant(time.substring(0, 19));

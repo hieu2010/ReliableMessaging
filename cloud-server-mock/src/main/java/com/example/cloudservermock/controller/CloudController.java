@@ -47,12 +47,12 @@ public class CloudController {
             }
         }
         weatherRepo.saveAll(weatherList);
-        return Mono.just("Data length: " + dataAsCsv.length() + "\nData saved: " + weatherList.size() + "\nDuplicates: " + duplicateCount);
+        return Mono.just("Length: " + dataAsCsv.length() + " Saved: " + weatherList.size() + "Duplicates: " + duplicateCount);
     }
 
-    @GetMapping("/health")
-    public String health() {
-        return "hello world";
+    @GetMapping("/visualization")
+    public List<Weather> health() {
+        return weatherRepo.getWeatherData();
     }
 
 }
