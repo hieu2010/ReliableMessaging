@@ -36,8 +36,8 @@ public class CloudController {
         String[] lines = dataAsCsv.split("\\n");
         LOGGER.info("Data received: {}", lines.length);
         int duplicateCount = 0;
-        int addedCount = 0;
-        List<Weather> weatherList = new ArrayList<Weather>();
+        int addedCount = 0; // is/will this (be) needed?
+        List<Weather> weatherList = new ArrayList<>();
         for(String s : lines) {
             Weather data = Weather.csvToString(s);
             if(weatherRepo.findOneByTime_Local(data.getTime_local()) == null) {
@@ -47,7 +47,7 @@ public class CloudController {
             }
         }
         weatherRepo.saveAll(weatherList);
-        return Mono.just("Data length: " + String.valueOf(dataAsCsv.length() + "\nData saved: " + weatherList.size() + "\nDuplicates: " + duplicateCount));
+        return Mono.just("Data length: " + dataAsCsv.length() + "\nData saved: " + weatherList.size() + "\nDuplicates: " + duplicateCount);
     }
 
     @GetMapping("/health")
