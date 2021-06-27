@@ -30,7 +30,7 @@ Both **Local Component** and **Cloud Component** use Java 11, Spring Boot, and M
 The local component has three main objectives: 
  - generate (simulate) sensor data
  - send the data to the Cloud Component
- - receive orders (commands) from the cloud
+ - receive commands from the cloud
 
 ### Data Generation
 
@@ -48,18 +48,22 @@ The class _DeliveryTaskWrapper.java_ is a wrapper for a _DeliveryTask.java_, whi
 
 The server components has two main objectives:
  - listen/receive data from the local component
- - send the order/command to the local component
+ - send a command to the local component
 
 ### Cloud controller
 
-The class _CloudController_ is responsible for exposing an endpoint to which data from local component is sent. 
+The class _CloudController.java_ is responsible for exposing an endpoint to which data from local component is sent. 
 Furthermore, it contains the logic that is responsible for extracting relevant information from a data string, checking the duplicates 
 and saving received data to the database. After the controller has received and processed data from the local component, 
 it sends the acknowledgement to the local component in a form of a string. 
 
 The component check for duplicates in order to...
 
-Moreover, the cloud component saves the receives data in the mongoDB in order to prepare orders for the local component in a separate process.
+Moreover, the cloud component saves the receives data in the mongoDB in order to prepare commands for the local component in a separate process.
+
+### Command delivery
+
+The class _CommandTaskWrapper.java_ is a wrapper for a _CommandTask.java_, which represents a periodical attempt to send commands to the local component. Commands are based on the data from the local component and represent a specific action to undertake according to the average value of temperature and humidity.
 
 # Ensuring reliable message delivery
 
