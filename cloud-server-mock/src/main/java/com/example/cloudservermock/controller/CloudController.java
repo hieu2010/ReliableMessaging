@@ -45,7 +45,7 @@ public class CloudController {
             }
         }
         weatherRepo.saveAll(weatherList);
-        return Mono.just("Length: " + dataAsCsv.length() + " Saved: " + weatherList.size() + "Duplicates: " + duplicateCount);
+        return Mono.just("Length: " + dataAsCsv.length() + ", saved: " + weatherList.size() + ", duplicates: " + duplicateCount);
     }
 
     @GetMapping("/visualization")
