@@ -60,7 +60,7 @@ public class CommandTaskWrapper {
             if (data.isEmpty()) {
                 return;
             }
-            LOGGER.info("CoommandTask pulled {} entries", data.size());
+            LOGGER.info("Pulled {} entries", data.size());
             // Second, create a command for the local component
             // according to the values in data
             Command commandForTheLocalComponent = prepareInstructionForLocalComp(data);

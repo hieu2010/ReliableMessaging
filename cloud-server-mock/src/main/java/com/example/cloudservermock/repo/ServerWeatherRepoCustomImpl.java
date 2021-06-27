@@ -69,7 +69,7 @@ public class ServerWeatherRepoCustomImpl implements ServerWeatherRepoCustom {
     public List<Weather> getNoOlderThan(short min) {
         Instant expired = Instant.now().minus(2, ChronoUnit.SECONDS);
         return mongoTemplate.find(Query.query(
-                Criteria.where("localTimeInstant").gt(expired)
+                Criteria.where("time").lte(expired)
         ), Weather.class, "server-weather");
     }
 
