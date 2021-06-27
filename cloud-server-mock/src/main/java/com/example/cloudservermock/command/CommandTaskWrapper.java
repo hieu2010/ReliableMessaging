@@ -77,7 +77,6 @@ public class CommandTaskWrapper {
                     if (!isRunning) {
                         start();
                     }
-                } catch (Exception e) {
                     LOGGER.info("Error msg {}", e.getMessage());
                     LOGGER.info("Server error.");
                     try {

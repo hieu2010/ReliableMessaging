@@ -33,7 +33,7 @@ public class ServerWeatherRepoCustomImpl implements ServerWeatherRepoCustom {
     @Override
     public List<Weather> getLastX(int maxCount) {
         // To display latest weather data
-        return mongoTemplate.find(new Query().limit(maxCount), Weather.class);
+        return mongoTemplate.find(new Query().limit(maxCount), Weather.class, "server-weather");
     }
 
     @Override

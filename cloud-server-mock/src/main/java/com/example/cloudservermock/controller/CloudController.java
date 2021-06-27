@@ -26,7 +26,7 @@ public class CloudController {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public Mono<String> answer(@RequestBody String dataAsCsv) {
-        if(started) {
+        if (started) {
             // TODO:
             //  create a jar that sets up the server-weather collection instead
             weatherRepo.create();
