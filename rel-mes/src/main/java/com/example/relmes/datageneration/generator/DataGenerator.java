@@ -29,9 +29,10 @@ public class DataGenerator {
     public void produceWeatherData() {
         //LOGGER.info("Producing data...");
         // First, produce random weather data from a csv file
-        String[] rawWeather = weatherReader.getRow(
-                RAND.nextInt(weatherReader.getNumberOfDataEntries() - 1) + 1);
-        Weather randomWeatherMeasurement = Weather.createWeather(rawWeather);
+        int rowIndex = RAND.nextInt(weatherReader.getNumberOfDataEntries() - 1) + 1;
+        String temp = weatherReader.getTemp(rowIndex);
+        String hum = weatherReader.getHum(rowIndex);
+        Weather randomWeatherMeasurement = Weather.createWeather(temp, hum);
         // Second, save it to the mongo
         weatherRepo.save(Converter.convertMeasurement(randomWeatherMeasurement));
     }

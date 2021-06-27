@@ -40,9 +40,9 @@ public class ServerWeatherRepoCustomImpl implements ServerWeatherRepoCustom {
     }
 
     @Override
-    public Weather findOneByTime_Local(String time_local) {
+    public Weather findOneByTime(Instant time) {
         // To check for duplicates
-        Query idQuery = new Query().addCriteria(Criteria.where("time_local").is(time_local));
+        Query idQuery = new Query().addCriteria(Criteria.where("time").is(time));
         return mongoTemplate.findOne(idQuery, Weather.class, "server-weather");
     }
 

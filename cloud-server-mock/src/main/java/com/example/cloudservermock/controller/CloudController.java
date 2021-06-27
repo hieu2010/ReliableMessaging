@@ -1,11 +1,9 @@
 package com.example.cloudservermock.controller;
 
 import com.example.cloudservermock.data.Weather;
-import com.mongodb.client.result.DeleteResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -40,7 +38,7 @@ public class CloudController {
         List<Weather> weatherList = new ArrayList<>();
         for(String s : lines) {
             Weather data = Weather.csvToString(s);
-            if(weatherRepo.findOneByTime_Local(data.getTime_local()) == null) {
+            if(weatherRepo.findOneByTime(data.getTime()) == null) {
                 weatherList.add(data);
             } else {
                 duplicateCount++;
