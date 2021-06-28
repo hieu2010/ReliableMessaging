@@ -14,6 +14,10 @@ import java.util.List;
 @Repository
 public class WeatherRepoCustomImpl implements WeatherRepoCustom {
 
+    // collections
+    private static final String LOCAL_WEATHER = "local-weather";
+    private static final String LOCAL_WEATHER_LOG = "local-weather-log";
+
     private final MongoTemplate mongoTemplate;
 
     @Autowired
@@ -30,11 +34,11 @@ public class WeatherRepoCustomImpl implements WeatherRepoCustom {
     public List<MongoWeather> getLogEntries() {
         return mongoTemplate.find(Query.query(
                 Criteria.where("temp").gt(-100)
-        ), MongoWeather.class, "client-logs");
+        ), MongoWeather.class, LOCAL_WEATHER_LOG);
     }
 
     @Override
     public void addLogEntries(List<MongoWeather> data) {
-        data.forEach(value -> mongoTemplate.save(value, "client-logs"));
+        data.forEach(value -> mongoTemplate.save(value, LOCAL_WEATHER_LOG));
     }
 }

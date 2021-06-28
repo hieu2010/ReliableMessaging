@@ -25,7 +25,7 @@ public class Converter {
         return mongoWeather;
     }
 
-    private static String generateId() {
+    public static String generateId() {
         return BASE64_ENCODER.encodeToString(getRaw());
     }
 
