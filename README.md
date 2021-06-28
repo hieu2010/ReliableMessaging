@@ -91,6 +91,15 @@ We use MongoDB Atlas which currently provides this project with three available 
 Mocked sensor data is generated every 200m using Spring scheduler. A devivery task is a scheduled task that can be stopped and started. This is needed in case when Cloud Component is dead. 
 
 
+#### Additional Reliability Check
+
+The local component stores every weather data into a log collection if the data was successfully sent.
+The cloud component stores every weather data into a log collection if the data was received.
+By taking a look at both log collections, the reliability of our components can be checked. Components can be turned off and on repeatedly and the third component "reliabilityCheck" can display the log collections in real-time (pulls the data every 500ms). The reliabilityChecker requires you to enable CORS on your browser. There is a readme in the folder which explains how to enable CORS for Chrome.
+
+An example on how it would look like:
+![ReliabilityCheck animation](https://github.com/hieu2010/ReliableMessaging/blob/main/reliabilityCheck/Animation.gif)
+
 # Weather Data
 
 Our reliable HTTP Client uses historical weather .csv data from https://meteostat.net/ to simulate sensor data. 
