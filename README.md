@@ -102,7 +102,9 @@ An example on how it would look like:
 
 # Caveat
 
-In its current state, the application provides only one-directional communication. We did not manage to expose the local component to the outside world, and thus, the cloud component is not able to reach the server on the local component. The local components is able to establish the connection with the cloud. This has also been demostrated in the demo. 
+In its current state, the application provides only one-directional communication. We did not manage to expose the local component to the outside world, and thus, the cloud component is not able to reach the server on the local component. However, the local components is able to establish the connection with the cloud.
+We tested the application in a scenario where both local and cloud components were run locally, and we stated that the reliable communication is ensured.
+This has also been demostrated in the demo. 
 
 # Weather Data
 
