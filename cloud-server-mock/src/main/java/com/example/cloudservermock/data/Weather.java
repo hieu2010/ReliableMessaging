@@ -15,9 +15,6 @@ import java.util.Random;
 @Document("server-weather")
 public class Weather {
 
-    private static final short ID_LEN = 10;
-    private static final Base64.Encoder BASE64_ENCODER = Base64.getEncoder().withoutPadding();
-    private static final Random RAND = new Random();
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Id
@@ -85,15 +82,5 @@ public class Weather {
         ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
         Instant result = Instant.from(zonedDateTime);
         return result;
-    }
-
-    private static String generateId() {
-        return BASE64_ENCODER.encodeToString(getRaw());
-    }
-
-    private static byte[] getRaw() {
-        byte[] raw = new byte[ID_LEN];
-        RAND.nextBytes(raw);
-        return raw;
     }
 }

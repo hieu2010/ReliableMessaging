@@ -1,6 +1,7 @@
 package com.example.cloudservermock.command;
 
 import com.example.cloudservermock.data.Weather;
+import com.example.cloudservermock.repo.ServerCommandRepo;
 import com.example.cloudservermock.repo.ServerWeatherRepo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,16 +35,19 @@ public class CommandTaskWrapper {
 
     private TaskScheduler taskScheduler;
     private ServerWeatherRepo weatherRepo;
+    private ServerCommandRepo commandRepo;
     private WebClient webClient;
 
     private static Command prevCommand = Command.HUMIDITY_AND_TEMPERATURE_OK;
     @Autowired
     public CommandTaskWrapper(TaskScheduler taskScheduler,
                                ServerWeatherRepo weatherRepo,
+                               ServerCommandRepo commandRepo,
                                WebClient webClient) {
         this.taskScheduler = taskScheduler;
         this.weatherRepo = weatherRepo;
         this.webClient = webClient;
+        this.commandRepo = commandRepo;
     }
 
     @PostConstruct
@@ -64,6 +68,7 @@ public class CommandTaskWrapper {
             // Second, create a command for the local component
             // according to the values in data
             Command commandForTheLocalComponent = prepareInstructionForLocalComp(data);
+            commandRepo.save(MongoCommand.convert(commandForTheLocalComponent));
             if(commandForTheLocalComponent != prevCommand) {
                 LOGGER.info("Command changed to: {}", commandForTheLocalComponent);
                 prevCommand = commandForTheLocalComponent;
@@ -81,6 +86,7 @@ public class CommandTaskWrapper {
 
                         success = true;
                         // TODO: Add command into a collection
+                        // Dawid: I moved this above, before the if
                         if (!isRunning) {
                             start();
                         }

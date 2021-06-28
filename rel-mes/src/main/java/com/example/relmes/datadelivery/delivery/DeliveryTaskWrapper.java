@@ -75,7 +75,6 @@ public class DeliveryTaskWrapper {
                         }
                     } catch (Exception e) {
                         LOGGER.info("Error msg {}", e.getMessage());
-                        LOGGER.info("Server error.");
                         try {
                             // busy waiting
                             Thread.sleep(2000);
@@ -89,7 +88,6 @@ public class DeliveryTaskWrapper {
                     }
                 } while (!success);
                 LOGGER.info("Answer from the server: {}", answer);
-                LOGGER.info("Transferring to the Cloud successful. Deleting processed records.");
                 // delete processed records from the db
                 List<String> idsToRemove = data.stream()
                         .map(MongoWeather::getMeasurementId)

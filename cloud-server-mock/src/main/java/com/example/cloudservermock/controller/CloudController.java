@@ -1,7 +1,5 @@
 package com.example.cloudservermock.controller;
 
-import com.example.cloudservermock.command.Command;
-import com.example.cloudservermock.command.CommandTaskWrapper;
 import com.example.cloudservermock.data.Weather;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,7 +34,6 @@ public class CloudController {
         String[] lines = dataAsCsv.split("\\n");
         LOGGER.info("Data received: {}", lines.length);
         int duplicateCount = 0;
-        int addedCount = 0; // is/will this (be) needed?
         List<Weather> weatherList = new ArrayList<>();
         List<Weather> allList = new ArrayList<>();
         for(String s : lines) {
@@ -49,7 +46,7 @@ public class CloudController {
             }
         }
         weatherRepo.saveAll(weatherList);
-        weatherRepo.addLogEntries(allList);
+        weatherRepo.addWeatherLogEntries(allList);
         return Mono.just("Length: " + dataAsCsv.length() + ", saved: " + weatherList.size() + ", duplicates: " + duplicateCount);
     }
 
@@ -60,7 +57,7 @@ public class CloudController {
 
     @GetMapping("/getWeatherLog")
     public List<Weather> getWeatherLog() {
-        return weatherRepo.getLogEntries();
+        return weatherRepo.getWeatherLogEntries();
     }
 
 }
