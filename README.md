@@ -100,6 +100,10 @@ By taking a look at both log collections, the reliability of our components can 
 An example on how it would look like:
 ![ReliabilityCheck animation](https://github.com/hieu2010/ReliableMessaging/blob/main/reliabilityCheck/Animation.gif)
 
+# Caveat
+
+In its current state, the application provides only one-directional communication. We did not manage to expose the local component to the outside world, and thus, the cloud component is not able to reach the server on the local component. The local components is able to establish the connection with the cloud. This has also been demostrated in the demo. 
+
 # Weather Data
 
 Our reliable HTTP Client uses historical weather .csv data from https://meteostat.net/ to simulate sensor data. 
