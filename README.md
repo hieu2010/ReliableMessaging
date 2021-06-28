@@ -57,7 +57,7 @@ Furthermore, it contains the logic that is responsible for extracting relevant i
 and saving received data to the database. After the controller has received and processed data from the local component, 
 it sends the acknowledgement to the local component in a form of a string. 
 
-The component check for duplicates in order to...
+The component check for duplicates in order to avoid processing the same data multiple times.
 
 Moreover, the cloud component saves the receives data in the mongoDB in order to prepare commands for the local component in a separate process.
 
@@ -71,20 +71,20 @@ This section collects some questions and answers concerning reliable message del
 
 #### How is reliable messaging ensured?
 
-Reliable messaging is warranted through the HTTP and the underlying TCP protocol. 
+Reliable messaging is warranted through the HTTP and the underlying TCP protocol. If the request was received and processed, a positive response code is returned to the sender. Until then, the sender would re-try until it was successful. Our components also do multithreading, so each component won't be blocked while attempting to send requests out: The local component would still gather weather data in the background, the cloud component would still listen to it's port in case new weather data is sent to it.
 
 #### What happens if Local Component is disconnected?
 
-Answer 2
+The cloud component would still be working as is. Listening to it's port in case a request comes in and it would re-try to send the command to the client. Thanks to a database (MongoDB), the local component won't lose any weather data since weather data is being pulled from the database and only deleted if the weather data was successfully processed by the cloud component. The cloud component will also check for duplicates in case the local component crashed when a request was successful but the data wasn't removed from the database yet.
 
 #### What happens if Cloud Component is disconnected?
 
-The data generator still produces data, but the data delivery task is stopped. Repeated attemps to send the originally read data are made. 
-When the cloud component is reconnected, the original data is sent, the delivery taks is restarted. 
+The data generator still produces data and saves it in a MongoDB collection, but the data delivery task is stopped. Repeated attemps to send the originally read data are made. 
+When the cloud component is reconnected, the original data is sent, the data is removed from the MongoDB collection and the delivery taks is restarted. We ensure that all weather data that was produced will be processed in the long run because the consumption rate is double of the production rate (client can send up to 100 data entries every 10 seconds whereas only 50 data entries are produced in that timeframe). Also the cloud component won't lose any of the stored weather data as well, since it also uses MongoDB to store all data.
 
 #### What happens if MongoDB crashes?
 
-This part has not been covered.
+We use MongoDB Atlas which currently provides this project with three available replicas and increases the availability of this whole setup.
 
 #### How are tasks scheduled?
 
@@ -94,7 +94,7 @@ Mocked sensor data is generated every 200m using Spring scheduler. A devivery ta
 # Weather Data
 
 Our reliable HTTP Client uses historical weather .csv data from https://meteostat.net/ to simulate sensor data. 
-_time_, _temp_ and _rhum_ are send to the Cloud. In addition, a _time_local_ is replaced with the actual time (Instant.now()).
+_time_, _temp_ and _rhum_ are send to the Cloud. In addition, _time_ is replaced with the actual time (Instant.now()).
 
 ### CSV Format: 
 | time | time_local | temp | dwpt | rhum | prcp | snow | wdir | wspd | wpgt | pres | tsun | coco |
