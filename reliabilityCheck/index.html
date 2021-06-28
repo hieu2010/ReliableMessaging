@@ -1,0 +1,105 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Reliable Messenger Info</title>
+  <meta name="description" content="Reliable Messenger Info">
+	
+	<style>
+	* {
+		box-sizing: border-box;
+	}
+	.row {
+		display: flex;
+		margin-left:-5px;
+		margin-right:-5px;
+	}
+
+	.column {
+		flex: 50%;
+		padding: 5px;
+	}
+	
+	table {
+		font-family: arial, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+	}
+
+	td, th {
+		border: 1px solid #dddddd;
+		text-align: left;
+		padding: 8px;
+	}
+
+	tr:nth-child(even) {
+		background-color: #dddddd;
+	}
+	
+	</style>
+</head>
+
+<body>
+	<center><h2>Reliable Messenger Information</h2></center>
+  <div class="row">
+		<div class="column">
+			<table>
+				<thead>
+				<tr>
+					<th>MeasurementID</th>
+					<th>Temp</th>
+					<th>Hum</th>
+					<th>Time</th>
+				</tr>
+				</thead>
+				<tbody id="table-local">
+				
+				</tbody>
+			</table>
+			</div>
+		
+		<div class="column">
+			<table>
+				<thead>
+				<tr>
+					<th>MeasurementID</th>
+					<th>Temp</th>
+					<th>Hum</th>
+					<th>Time</th
+				</tr>
+				</thead>
+				<tbody id="table-cloud">
+				
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div id="response"></div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+	
+		var intervalId = window.setInterval(function(){
+			$.get("https://cloud-component-htqvfl4nhq-ew.a.run.app/getWeatherLog", function(data, status){
+				let toChart = JSON.parse(JSON.stringify(data)).reverse();
+				$("#table-cloud").empty();
+				toChart.forEach(data => {
+					let trString = '<tr><td>' + data["measurementId"] + '</td><td>' + data["temp"] + '</td><td>' + data["rhum"] + '</td><td>' + data["time"] + '</td></tr>';
+					$("#table-cloud").append(trString);
+				});
+			});
+			
+			$.get("http://localhost:8181/getWeatherLog", function(data, status){
+				let toChart = JSON.parse(JSON.stringify(data)).reverse();
+				$("#table-local").empty();
+				toChart.forEach(data => {
+					let trString = '<tr><td>' + data["measurementId"] + '</td><td>' + data["temp"] + '</td><td>' + data["rhum"] + '</td><td>' + data["time"] + '</td></tr>';
+					$("#table-local").append(trString);
+				});
+			});	
+		}, 500);
+	</script>
+</body>
+</html>

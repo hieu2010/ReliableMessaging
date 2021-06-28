@@ -1,0 +1,6 @@
+You need to enable CORS in order to make this site running properly.
+
+For chrome:
+- Create a shortcut on your desktop
+- Right-click on the shortcut and click Properties
+- Add the end of the Target property append: " --disable-web-security --user-data-dir="C:/ChromeDevSession"
