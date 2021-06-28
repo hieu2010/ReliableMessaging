@@ -130,3 +130,21 @@ tsun |	The one hour sunshine total in minutes (m) |	Integer
 coco |	The weather condition code |	Integer
 
   
+## Setup:
+
+### How to run the gcloud component:
+1. Open Gcloud cmd and type: "gcloud auth configure-docker"
+2. cd cloud-server-mock, mvn package
+3. Go back to the root folder, make push
+4. Open GCloud cmd and type: "gcloud run deploy --image gcr.io/reliable-messaging/cloud-component --platform managed"
+5. use default service name (cloud-component)
+6. Enter 14 (europe-west1)
+7. Allow unauthenticated invocations (y)
+
+### How to run the local component:
+1. Open ReliableMessaging\rel-mes\src\main\java\com\example\relmes\datadelivery\config\Config.java and change the BASEURL to the service URL
+2. Start the application via IntelliJ or make use of mvn package, java -jar <jar_file>
+
+### How to run the ReliabilityCheck:
+1. Open a browser that allows CORS (see reliabilityCheck/README for instructions for Chrome)
+2. Open reliabilityCheck/index.html
