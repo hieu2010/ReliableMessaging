@@ -47,4 +47,30 @@ public class MongoCommand {
         mongoCommand.setTime(Instant.now());
         return mongoCommand;
     }
+
+    public static MongoCommand strConvert(String commandStr) {
+        Command command = null;
+        switch (commandStr) {
+            case "REDUCE_HUMIDITY":
+                command = Command.REDUCE_HUMIDITY;
+                break;
+            case "REDUCE_TEMPERATURE":
+                command = Command.REDUCE_TEMPERATURE;
+                break;
+            case "HAZARDOUS_TEMPERATURE_AND_HUMIDITY":
+                command = Command.HAZARDOUS_TEMPERATURE_AND_HUMIDITY;
+                break;
+            case "HUMIDITY_AND_TEMPERATURE_OK":
+                command = Command.HUMIDITY_AND_TEMPERATURE_OK;
+                break;
+            default:
+                command = Command.ERROR;
+                break;
+        }
+        MongoCommand mongoCommand = new MongoCommand();
+        mongoCommand.setCommandId(Converter.generateId());
+        mongoCommand.setCommand(command);
+        mongoCommand.setTime(Instant.now());
+        return mongoCommand;
+    }
 }

@@ -68,11 +68,10 @@ public class CommandTaskWrapper {
             // Second, create a command for the local component
             // according to the values in data
             Command commandForTheLocalComponent = prepareInstructionForLocalComp(data);
-            commandRepo.save(MongoCommand.convert(commandForTheLocalComponent));
             if(commandForTheLocalComponent != prevCommand) {
                 LOGGER.info("Command changed to: {}", commandForTheLocalComponent);
                 prevCommand = commandForTheLocalComponent;
-
+                commandRepo.save(MongoCommand.convert(commandForTheLocalComponent));
                 // Third, make a POST request
                 do {
                     try {

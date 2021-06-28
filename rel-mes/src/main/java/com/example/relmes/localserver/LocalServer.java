@@ -1,6 +1,8 @@
 package com.example.relmes.localserver;
 
 import com.example.relmes.commons.repo.WeatherRepo;
+import com.example.relmes.commons.repo.ServerCommandRepo;
+import com.example.relmes.datageneration.documents.MongoCommand;
 import com.example.relmes.datageneration.documents.MongoWeather;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,11 +20,14 @@ public class LocalServer {
     @Autowired
     WeatherRepo weatherRepo;
 
+    @Autowired
+    ServerCommandRepo commandRepo;
+
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public void getAnswerFromTheCloud(@RequestBody String order) {
         LOGGER.info("Received the following order from the Cloud: {}", order);
-        // TODO: Add command to a collection
+        commandRepo.save(MongoCommand.strConvert(order));
     }
 
     @GetMapping("/getWeatherLog")
