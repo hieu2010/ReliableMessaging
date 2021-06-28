@@ -13,4 +13,6 @@ public interface ServerWeatherRepoCustom {
     void          create(); // Creates a capped collection server-weather if necessary
     List<Weather> getNoOlderThan(short min);
     List<Weather> getWeatherData();
+    void addLogEntries(List<Weather> weatherData);
+    List<Weather> getLogEntries();
 }

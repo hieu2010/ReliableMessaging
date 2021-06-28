@@ -1,21 +1,32 @@
 package com.example.relmes.localserver;
 
+import com.example.relmes.commons.repo.WeatherRepo;
+import com.example.relmes.datageneration.documents.MongoWeather;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class LocalServer {
 
     private static final Logger LOGGER = LogManager.getLogger(LocalServer.class);
 
+    @Autowired
+    WeatherRepo weatherRepo;
+
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public void getAnswerFromTheCloud(@RequestBody String order) {
         LOGGER.info("Received the following order from the Cloud: {}", order);
+        // TODO: Add command to a collection
+    }
+
+    @GetMapping("/getWeatherLog")
+    public List<MongoWeather> getWeatherLog() {
+        return weatherRepo.getLogEntries();
     }
 }

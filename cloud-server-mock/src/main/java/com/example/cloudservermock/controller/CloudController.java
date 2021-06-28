@@ -38,8 +38,10 @@ public class CloudController {
         int duplicateCount = 0;
         int addedCount = 0; // is/will this (be) needed?
         List<Weather> weatherList = new ArrayList<>();
+        List<Weather> allList = new ArrayList<>();
         for(String s : lines) {
             Weather data = Weather.csvToString(s);
+            allList.add(data);
             if(weatherRepo.findOneById(data.getMeasurementId()) == null) {
                 weatherList.add(data);
             } else {
@@ -47,12 +49,18 @@ public class CloudController {
             }
         }
         weatherRepo.saveAll(weatherList);
+        weatherRepo.addLogEntries(allList);
         return Mono.just("Length: " + dataAsCsv.length() + ", saved: " + weatherList.size() + ", duplicates: " + duplicateCount);
     }
 
     @GetMapping("/visualization")
     public List<Weather> health() {
         return weatherRepo.getWeatherData();
+    }
+
+    @GetMapping("/getWeatherLog")
+    public List<Weather> getWeatherLog() {
+        return weatherRepo.getLogEntries();
     }
 
 }

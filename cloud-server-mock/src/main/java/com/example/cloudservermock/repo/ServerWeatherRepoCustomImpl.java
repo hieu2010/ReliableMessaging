@@ -79,4 +79,16 @@ public class ServerWeatherRepoCustomImpl implements ServerWeatherRepoCustom {
                 Criteria.where("temp").gt(-100)
         ), Weather.class, "server-weather");
     }
+
+    @Override
+    public void addLogEntries(List<Weather> weatherData) {
+        weatherData.forEach(value -> mongoTemplate.save(value, "server-logs"));
+    }
+
+    @Override
+    public List<Weather> getLogEntries() {
+        return mongoTemplate.find(Query.query(
+                Criteria.where("temp").gt(-100)
+        ), Weather.class, "server-logs");
+    }
 }

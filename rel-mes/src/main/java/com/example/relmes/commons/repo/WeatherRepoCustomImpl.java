@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
@@ -23,5 +24,17 @@ public class WeatherRepoCustomImpl implements WeatherRepoCustom {
     @Override
     public List<MongoWeather> getLast(int maxCount) {
         return mongoTemplate.find(new Query().limit(maxCount), MongoWeather.class);
+    }
+
+    @Override
+    public List<MongoWeather> getLogEntries() {
+        return mongoTemplate.find(Query.query(
+                Criteria.where("temp").gt(-100)
+        ), MongoWeather.class, "client-logs");
+    }
+
+    @Override
+    public void addLogEntries(List<MongoWeather> data) {
+        data.forEach(value -> mongoTemplate.save(value, "client-logs"));
     }
 }

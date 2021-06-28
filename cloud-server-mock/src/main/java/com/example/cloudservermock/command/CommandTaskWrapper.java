@@ -80,6 +80,7 @@ public class CommandTaskWrapper {
                                 .block();
 
                         success = true;
+                        // TODO: Add command into a collection
                         if (!isRunning) {
                             start();
                         }

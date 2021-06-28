@@ -7,5 +7,6 @@ import java.util.List;
 public interface WeatherRepoCustom {
 
     List<MongoWeather> getLast(int maxCount);
-
+    List<MongoWeather> getLogEntries();
+    void addLogEntries(List<MongoWeather> data);
 }

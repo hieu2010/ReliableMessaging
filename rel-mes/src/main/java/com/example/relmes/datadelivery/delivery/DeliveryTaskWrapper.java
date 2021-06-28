@@ -68,7 +68,7 @@ public class DeliveryTaskWrapper {
                                 .retrieve()
                                 .bodyToMono(String.class)
                                 .block();
-
+                        weatherRepo.addLogEntries(data);
                         success = true;
                         if (!isRunning) {
                             start();
